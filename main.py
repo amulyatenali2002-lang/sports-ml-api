@@ -1,31 +1,51 @@
-from fastapi import FastAPI
-from pydantic import BaseModel
 import pandas as pd
+import numpy as np
 import joblib
 
+from fastapi import FastAPI
+from pydantic import BaseModel
 
-# Create FastAPI application
+
+# =========================================================
+# FASTAPI APP
+# =========================================================
+
 app = FastAPI(
     title="Sports Player Performance Prediction API",
-    description="API for predicting player performance score",
-    version="1.0"
+    description="API for predicting player performance score"
 )
 
 
-# Load trained model
-model = joblib.load("player_performance_model.pkl")
+# =========================================================
+# LOAD PLAYER PERFORMANCE MODEL
+# =========================================================
 
-# Load scaler
-scaler = joblib.load("player_performance_scaler.pkl")
+performance_model = joblib.load(
+    "player_performance_model.pkl"
+)
 
-# Load injury model
-injury_model = joblib.load("injury_classification_model.pkl")
-
-# Load injury scaler
-injury_scaler = joblib.load("injury_classification_scaler.pkl")
+performance_scaler = joblib.load(
+    "player_performance_scaler.pkl"
+)
 
 
-# Input data structure
+# =========================================================
+# LOAD INJURY CLASSIFICATION MODEL
+# =========================================================
+
+injury_model = joblib.load(
+    "injury_classification_model.pkl"
+)
+
+injury_scaler = joblib.load(
+    "injury_classification_scaler.pkl"
+)
+
+
+# =========================================================
+# PLAYER DATA
+# =========================================================
+
 class PlayerData(BaseModel):
 
     age: float
@@ -45,11 +65,14 @@ class PlayerData(BaseModel):
     decision_making_score: float
     teamwork_score: float
     team_ranking: float
+    player_performance_score: float
     player_rating: float
-    injury_risk: float
 
 
-# Injury Classification input data
+# =========================================================
+# INJURY DATA
+# =========================================================
+
 class InjuryData(BaseModel):
 
     age: float
@@ -71,85 +94,95 @@ class InjuryData(BaseModel):
     player_performance_score: float
     player_rating: float
 
-# Home page
+
+# =========================================================
+# HOME
+# =========================================================
+
 @app.get("/")
 def home():
 
     return {
-        "message": "Sports Player Performance Prediction API is running"
+        "message": "Sports ML API is running successfully"
     }
 
 
-# Prediction API
+# =========================================================
+# PLAYER PERFORMANCE PREDICTION
+# =========================================================
+
 @app.post("/predict")
 def predict_player(data: PlayerData):
 
-    input_data = pd.DataFrame([{
-        "age": data.age,
-        "sport_type": data.sport_type,
-        "position": data.position,
-        "experience_years": data.experience_years,
-        "height_cm": data.height_cm,
-        "weight_kg": data.weight_kg,
-        "strength_score": data.strength_score,
-        "matches_played": data.matches_played,
-        "goals_scored": data.goals_scored,
-        "assists": data.assists,
-        "training_hours_per_week": data.training_hours_per_week,
-        "gym_sessions_per_week": data.gym_sessions_per_week,
-        "injury_history_count": data.injury_history_count,
-        "leadership_score": data.leadership_score,
-        "decision_making_score": data.decision_making_score,
-        "teamwork_score": data.teamwork_score,
-        "team_ranking": data.team_ranking,
-        "player_rating": data.player_rating,
-        "injury_risk": data.injury_risk
-    }])
+    input_data = np.array([[
+        data.age,
+        data.sport_type,
+        data.position,
+        data.experience_years,
+        data.height_cm,
+        data.weight_kg,
+        data.strength_score,
+        data.matches_played,
+        data.goals_scored,
+        data.assists,
+        data.training_hours_per_week,
+        data.gym_sessions_per_week,
+        data.injury_history_count,
+        data.leadership_score,
+        data.decision_making_score,
+        data.teamwork_score,
+        data.team_ranking,
+        data.player_performance_score,
+        data.player_rating
+    ]])
 
+    # Scale player input
+    input_scaled = performance_scaler.transform(input_data)
 
-    # Scale input
-    input_scaled = scaler.transform(input_data)
-
-
-    # Make prediction
-    prediction = model.predict(input_scaled)
-
+    # Predict player performance
+    prediction = performance_model.predict(input_scaled)
 
     return {
-        "predicted_performance_score": round(float(prediction[0]), 2)
+        "predicted_performance_score": round(
+            float(prediction[0]), 2
+        )
     }
 
-    
-# Injury Classification prediction API
+
+# =========================================================
+# INJURY RISK CLASSIFICATION
+# =========================================================
+
 @app.post("/predict-injury")
 def predict_injury(data: InjuryData):
 
-    input_data = pd.DataFrame([{
-        "age": data.age,
-        "sport_type": data.sport_type,
-        "position": data.position,
-        "experience_years": data.experience_years,
-        "height_cm": data.height_cm,
-        "weight_kg": data.weight_kg,
-        "strength_score": data.strength_score,
-        "matches_played": data.matches_played,
-        "goals_scored": data.goals_scored,
-        "assists": data.assists,
-        "training_hours_per_week": data.training_hours_per_week,
-        "gym_sessions_per_week": data.gym_sessions_per_week,
-        "leadership_score": data.leadership_score,
-        "decision_making_score": data.decision_making_score,
-        "teamwork_score": data.teamwork_score,
-        "team_ranking": data.team_ranking,
-        "player_performance_score": data.player_performance_score,
-        "player_rating": data.player_rating
-    }])
+    input_data = np.array([[
+        data.age,
+        data.sport_type,
+        data.position,
+        data.experience_years,
+        data.height_cm,
+        data.weight_kg,
+        data.strength_score,
+        data.matches_played,
+        data.goals_scored,
+        data.assists,
+        data.training_hours_per_week,
+        data.gym_sessions_per_week,
+        data.leadership_score,
+        data.decision_making_score,
+        data.teamwork_score,
+        data.team_ranking,
+        data.player_performance_score,
+        data.player_rating
+    ]])
 
+    # Scale injury input
     input_scaled = injury_scaler.transform(input_data)
 
+    # Predict injury risk
     prediction = injury_model.predict(input_scaled)
 
     return {
         "predicted_injury_risk": int(prediction[0])
     }
-
