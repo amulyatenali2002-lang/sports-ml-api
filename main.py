@@ -12,7 +12,7 @@ from pydantic import BaseModel
 
 app = FastAPI(
     title="Sports Player Performance Prediction API",
-    description="API for predicting player performance score"
+    description="API for Player Performance and Injury Risk Prediction"
 )
 
 
@@ -136,10 +136,8 @@ def predict_player(data: PlayerData):
         data.player_rating
     ]])
 
-    # Scale player input
     input_scaled = performance_scaler.transform(input_data)
 
-    # Predict player performance
     prediction = performance_model.predict(input_scaled)
 
     return {
@@ -177,10 +175,8 @@ def predict_injury(data: InjuryData):
         data.player_rating
     ]])
 
-    # Scale injury input
     input_scaled = injury_scaler.transform(input_data)
 
-    # Predict injury risk
     prediction = injury_model.predict(input_scaled)
 
     return {
