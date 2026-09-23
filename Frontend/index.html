@@ -1,92 +1,573 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sports ML Prediction</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="container">
+    <h1>Sports Player Performance and Injury Risk Prediction</h1>
 
-    <h1>Sports ML Prediction System</h1>
 
-    <label>Age</label>
-    <input type="number" id="age" value="24">
+    <!-- ================================================= -->
+    <!-- PLAYER PERFORMANCE PREDICTION -->
+    <!-- ================================================= -->
 
-    <label>Sport Type</label>
-    <input type="number" id="sport_type" value="1">
+    <div class="card">
 
-    <label>Position</label>
-    <input type="number" id="position" value="1">
+        <h2>Player Performance Prediction</h2>
 
-    <label>Experience Years</label>
-    <input type="number" id="experience_years" value="3">
+        <div class="form-grid">
 
-    <label>Height (cm)</label>
-    <input type="number" id="height_cm" value="175">
+            <!-- Age -->
+            <div>
+                <label for="age">Age</label>
+                <input
+                    type="number"
+                    id="age"
+                    placeholder="Enter age">
+            </div>
 
-    <label>Weight (kg)</label>
-    <input type="number" id="weight_kg" value="70">
 
-    <label>Strength Score</label>
-    <input type="number" id="strength_score" value="80">
+            <!-- Sport Type -->
+            <div>
+                <label for="sport_type">Sport Type</label>
 
-    <label>Matches Played</label>
-    <input type="number" id="matches_played" value="20">
+                <select id="sport_type">
+                    <option value="0">Basketball</option>
+                    <option value="1">Cricket</option>
+                    <option value="2">Football</option>
+                    <option value="3">Hockey</option>
+                </select>
+            </div>
 
-    <label>Goals Scored</label>
-    <input type="number" id="goals_scored" value="10">
 
-    <label>Assists</label>
-    <input type="number" id="assists" value="5">
+            <!-- Position -->
+            <div>
+                <label for="position">Position</label>
 
-    <label>Training Hours Per Week</label>
-    <input type="number" id="training_hours_per_week" value="15">
+                <select id="position">
+                    <option value="0">All-Rounder</option>
+                    <option value="1">Defender</option>
+                    <option value="2">Forward</option>
+                    <option value="3">Goalkeeper</option>
+                    <option value="4">Midfielder</option>
+                    <option value="5">Striker</option>
+                </select>
+            </div>
 
-    <label>Gym Sessions Per Week</label>
-    <input type="number" id="gym_sessions_per_week" value="4">
 
-    <label>Injury History Count</label>
-    <input type="number" id="injury_history_count" value="1">
+            <!-- Experience -->
+            <div>
+                <label for="experience_years">
+                    Experience Years
+                </label>
 
-    <label>Leadership Score</label>
-    <input type="number" id="leadership_score" value="75">
+                <input
+                    type="number"
+                    id="experience_years"
+                    placeholder="Enter experience">
+            </div>
 
-    <label>Decision Making Score</label>
-    <input type="number" id="decision_making_score" value="80">
 
-    <label>Teamwork Score</label>
-    <input type="number" id="teamwork_score" value="85">
+            <!-- Height -->
+            <div>
+                <label for="height_cm">
+                    Height (cm)
+                </label>
 
-    <label>Team Ranking</label>
-    <input type="number" id="team_ranking" value="5">
+                <input
+                    type="number"
+                    id="height_cm"
+                    placeholder="Enter height">
+            </div>
 
-    <label>Player Performance Score</label>
-    <input type="number" id="player_performance_score" value="70">
 
-    <label>Player Rating</label>
-    <input type="number" id="player_rating" value="8">
+            <!-- Weight -->
+            <div>
+                <label for="weight_kg">
+                    Weight (kg)
+                </label>
 
-    <br><br>
+                <input
+                    type="number"
+                    id="weight_kg"
+                    placeholder="Enter weight">
+            </div>
 
-    <button onclick="predictPerformance()">
-        Predict Player Performance
-    </button>
 
-    <button onclick="predictInjury()">
-        Predict Injury Risk
-    </button>
+            <!-- Strength -->
+            <div>
+                <label for="strength_score">
+                    Strength Score
+                </label>
 
-    <h2>Prediction Result</h2>
+                <input
+                    type="number"
+                    id="strength_score"
+                    placeholder="Enter strength score">
+            </div>
 
-    <div id="result">
-        Result will appear here
+
+            <!-- Matches -->
+            <div>
+                <label for="matches_played">
+                    Matches Played
+                </label>
+
+                <input
+                    type="number"
+                    id="matches_played"
+                    placeholder="Enter matches">
+            </div>
+
+
+            <!-- Goals -->
+            <div>
+                <label for="goals_scored">
+                    Goals Scored
+                </label>
+
+                <input
+                    type="number"
+                    id="goals_scored"
+                    placeholder="Enter goals">
+            </div>
+
+
+            <!-- Assists -->
+            <div>
+                <label for="assists">
+                    Assists
+                </label>
+
+                <input
+                    type="number"
+                    id="assists"
+                    placeholder="Enter assists">
+            </div>
+
+
+            <!-- Training Hours -->
+            <div>
+                <label for="training_hours_per_week">
+                    Training Hours Per Week
+                </label>
+
+                <input
+                    type="number"
+                    id="training_hours_per_week"
+                    placeholder="Enter training hours">
+            </div>
+
+
+            <!-- Gym Sessions -->
+            <div>
+                <label for="gym_sessions_per_week">
+                    Gym Sessions Per Week
+                </label>
+
+                <input
+                    type="number"
+                    id="gym_sessions_per_week"
+                    placeholder="Enter gym sessions">
+            </div>
+
+
+            <!-- Injury History -->
+            <div>
+                <label for="injury_history_count">
+                    Injury History Count
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_history_count"
+                    placeholder="Enter injury count">
+            </div>
+
+
+            <!-- Leadership -->
+            <div>
+                <label for="leadership_score">
+                    Leadership Score
+                </label>
+
+                <input
+                    type="number"
+                    id="leadership_score"
+                    placeholder="Enter leadership score">
+            </div>
+
+
+            <!-- Decision Making -->
+            <div>
+                <label for="decision_making_score">
+                    Decision Making Score
+                </label>
+
+                <input
+                    type="number"
+                    id="decision_making_score"
+                    placeholder="Enter decision score">
+            </div>
+
+
+            <!-- Teamwork -->
+            <div>
+                <label for="teamwork_score">
+                    Teamwork Score
+                </label>
+
+                <input
+                    type="number"
+                    id="teamwork_score"
+                    placeholder="Enter teamwork score">
+            </div>
+
+
+            <!-- Team Ranking -->
+            <div>
+                <label for="team_ranking">
+                    Team Ranking
+                </label>
+
+                <input
+                    type="number"
+                    id="team_ranking"
+                    placeholder="Enter team ranking">
+            </div>
+
+
+            <!-- Player Rating -->
+            <div>
+                <label for="player_rating">
+                    Player Rating
+                </label>
+
+                <input
+                    type="number"
+                    id="player_rating"
+                    step="0.01"
+                    placeholder="Enter player rating">
+            </div>
+
+        </div>
+
+
+        <!-- PLAYER PERFORMANCE BUTTON -->
+
+        <button
+            type="button"
+            id="predictPerformanceBtn"
+            onclick="predictPerformance()">
+
+            Predict Performance
+
+        </button>
+
+
+        <!-- PLAYER PERFORMANCE RESULT -->
+
+        <div
+            id="performanceResult"
+            class="result">
+
+            Prediction will appear here
+
+        </div>
+
     </div>
 
-</div>
 
-<script src="script.js"></script>
+    <!-- ================================================= -->
+    <!-- INJURY RISK PREDICTION -->
+    <!-- ================================================= -->
+
+    <div class="card">
+
+        <h2>Injury Risk Prediction</h2>
+
+        <div class="form-grid">
+
+            <!-- Age -->
+            <div>
+                <label for="injury_age">
+                    Age
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_age"
+                    placeholder="Enter age">
+            </div>
+
+
+            <!-- Sport -->
+            <div>
+                <label for="injury_sport_type">
+                    Sport Type
+                </label>
+
+                <select id="injury_sport_type">
+                    <option value="0">Basketball</option>
+                    <option value="1">Cricket</option>
+                    <option value="2">Football</option>
+                    <option value="3">Hockey</option>
+                </select>
+            </div>
+
+
+            <!-- Position -->
+            <div>
+                <label for="injury_position">
+                    Position
+                </label>
+
+                <select id="injury_position">
+                    <option value="0">All-Rounder</option>
+                    <option value="1">Defender</option>
+                    <option value="2">Forward</option>
+                    <option value="3">Goalkeeper</option>
+                    <option value="4">Midfielder</option>
+                    <option value="5">Striker</option>
+                </select>
+            </div>
+
+
+            <!-- Experience -->
+            <div>
+                <label for="injury_experience_years">
+                    Experience Years
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_experience_years"
+                    placeholder="Enter experience">
+            </div>
+
+
+            <!-- Height -->
+            <div>
+                <label for="injury_height_cm">
+                    Height (cm)
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_height_cm"
+                    placeholder="Enter height">
+            </div>
+
+
+            <!-- Weight -->
+            <div>
+                <label for="injury_weight_kg">
+                    Weight (kg)
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_weight_kg"
+                    placeholder="Enter weight">
+            </div>
+
+
+            <!-- Strength -->
+            <div>
+                <label for="injury_strength_score">
+                    Strength Score
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_strength_score"
+                    placeholder="Enter strength score">
+            </div>
+
+
+            <!-- Matches -->
+            <div>
+                <label for="injury_matches_played">
+                    Matches Played
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_matches_played"
+                    placeholder="Enter matches">
+            </div>
+
+
+            <!-- Goals -->
+            <div>
+                <label for="injury_goals_scored">
+                    Goals Scored
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_goals_scored"
+                    placeholder="Enter goals">
+            </div>
+
+
+            <!-- Assists -->
+            <div>
+                <label for="injury_assists">
+                    Assists
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_assists"
+                    placeholder="Enter assists">
+            </div>
+
+
+            <!-- Training -->
+            <div>
+                <label for="injury_training_hours_per_week">
+                    Training Hours Per Week
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_training_hours_per_week"
+                    placeholder="Enter training hours">
+            </div>
+
+
+            <!-- Gym -->
+            <div>
+                <label for="injury_gym_sessions_per_week">
+                    Gym Sessions Per Week
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_gym_sessions_per_week"
+                    placeholder="Enter gym sessions">
+            </div>
+
+
+            <!-- Leadership -->
+            <div>
+                <label for="injury_leadership_score">
+                    Leadership Score
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_leadership_score"
+                    placeholder="Enter leadership score">
+            </div>
+
+
+            <!-- Decision Making -->
+            <div>
+                <label for="injury_decision_making_score">
+                    Decision Making Score
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_decision_making_score"
+                    placeholder="Enter decision score">
+            </div>
+
+
+            <!-- Teamwork -->
+            <div>
+                <label for="injury_teamwork_score">
+                    Teamwork Score
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_teamwork_score"
+                    placeholder="Enter teamwork score">
+            </div>
+
+
+            <!-- Team Ranking -->
+            <div>
+                <label for="injury_team_ranking">
+                    Team Ranking
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_team_ranking"
+                    placeholder="Enter team ranking">
+            </div>
+
+
+            <!-- Player Performance Score -->
+            <div>
+                <label for="injury_player_performance_score">
+                    Player Performance Score
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_player_performance_score"
+                    readonly
+                    placeholder="Automatically generated">
+            </div>
+
+
+            <!-- Player Rating -->
+            <div>
+                <label for="injury_player_rating">
+                    Player Rating
+                </label>
+
+                <input
+                    type="number"
+                    id="injury_player_rating"
+                    step="0.01"
+                    placeholder="Enter player rating">
+            </div>
+
+        </div>
+
+
+        <!-- INJURY BUTTON -->
+
+        <button
+            type="button"
+            onclick="predictInjury()">
+
+            Predict Injury Risk
+
+        </button>
+
+
+        <!-- INJURY RESULT -->
+
+        <div
+            id="injuryResult"
+            class="result">
+
+            Prediction will appear here
+
+        </div>
+
+    </div>
+
+
+    <!-- JavaScript -->
+
+    <script src="script.js"></script>
 
 </body>
+
 </html>
