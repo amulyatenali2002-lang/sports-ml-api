@@ -1,8 +1,19 @@
 import pandas as pd
 import numpy as np
 import joblib
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+app = FastAPI(
+    title="Sports Player Performance Prediction API"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 from pydantic import BaseModel
 
 
@@ -13,6 +24,14 @@ from pydantic import BaseModel
 app = FastAPI(
     title="Sports Player Performance Prediction API",
     description="API for Player Performance and Injury Risk Prediction"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -45,9 +64,7 @@ injury_scaler = joblib.load(
 # =========================================================
 # PLAYER DATA
 # =========================================================
-
 class PlayerData(BaseModel):
-
     age: float
     sport_type: float
     position: float
@@ -65,9 +82,7 @@ class PlayerData(BaseModel):
     decision_making_score: float
     teamwork_score: float
     team_ranking: float
-    player_performance_score: float
     player_rating: float
-
 
 # =========================================================
 # INJURY DATA
@@ -132,7 +147,6 @@ def predict_player(data: PlayerData):
         data.decision_making_score,
         data.teamwork_score,
         data.team_ranking,
-        data.player_performance_score,
         data.player_rating
     ]])
 
@@ -140,11 +154,12 @@ def predict_player(data: PlayerData):
 
     prediction = performance_model.predict(input_scaled)
 
+    prediction = float(prediction[0])
+
     return {
-        "predicted_performance_score": round(
-            float(prediction[0]), 2
-        )
+        "predicted_performance_score": round(prediction, 2)
     }
+  
 
 
 # =========================================================
