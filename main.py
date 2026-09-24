@@ -1,19 +1,9 @@
 import pandas as pd
 import numpy as np
 import joblib
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-app = FastAPI(
-    title="Sports Player Performance Prediction API"
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
 from pydantic import BaseModel
 
 
@@ -25,6 +15,11 @@ app = FastAPI(
     title="Sports Player Performance Prediction API",
     description="API for Player Performance and Injury Risk Prediction"
 )
+
+
+# =========================================================
+# CORS
+# =========================================================
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,9 +57,11 @@ injury_scaler = joblib.load(
 
 
 # =========================================================
-# PLAYER DATA
+# PLAYER PERFORMANCE DATA - 19 FIELDS
 # =========================================================
+
 class PlayerData(BaseModel):
+
     age: float
     sport_type: float
     position: float
@@ -82,10 +79,12 @@ class PlayerData(BaseModel):
     decision_making_score: float
     teamwork_score: float
     team_ranking: float
+    player_performance_score: float
     player_rating: float
 
+
 # =========================================================
-# INJURY DATA
+# INJURY DATA - 18 FIELDS
 # =========================================================
 
 class InjuryData(BaseModel):
@@ -124,6 +123,7 @@ def home():
 
 # =========================================================
 # PLAYER PERFORMANCE PREDICTION
+# 19 INPUT FEATURES
 # =========================================================
 
 @app.post("/predict")
@@ -147,11 +147,14 @@ def predict_player(data: PlayerData):
         data.decision_making_score,
         data.teamwork_score,
         data.team_ranking,
+        data.player_performance_score,
         data.player_rating
     ]])
 
+    # Scale the 19 input features
     input_scaled = performance_scaler.transform(input_data)
 
+    # Predict player performance
     prediction = performance_model.predict(input_scaled)
 
     prediction = float(prediction[0])
@@ -159,11 +162,11 @@ def predict_player(data: PlayerData):
     return {
         "predicted_performance_score": round(prediction, 2)
     }
-  
 
 
 # =========================================================
 # INJURY RISK CLASSIFICATION
+# 18 INPUT FEATURES
 # =========================================================
 
 @app.post("/predict-injury")
@@ -190,8 +193,10 @@ def predict_injury(data: InjuryData):
         data.player_rating
     ]])
 
+    # Scale the 18 input features
     input_scaled = injury_scaler.transform(input_data)
 
+    # Predict injury risk
     prediction = injury_model.predict(input_scaled)
 
     return {
